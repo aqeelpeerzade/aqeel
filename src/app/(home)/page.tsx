@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import ConsultationForm from "@/components/ConsultationForm/ConsultationForm";
@@ -10,6 +13,7 @@ import Testimonials, { type Testimonial } from "./Testimonials";
 import { ArrowIcon, CheckIcon } from "@/lib/icons";
 import { asset } from "@/lib/asset";
 import styles from "./page.module.css";
+
 
 // export const metadata: Metadata = {
 //   title: { absolute: "Atlantech Global — Your AI-Ready Technology & Consulting Partner" },
@@ -55,36 +59,42 @@ const services = [
     desc: "Transform legacy systems into agile, connected digital ecosystems with innovative strategies that improve efficiency, customer experiences, and business agility.",
     cta: "Explore Digital Transformation",
     image: "/images/1.webp",
+    href: "digital-transformation-services",
   },
   {
     title: "AI & Automation",
     desc: "Leverage Artificial Intelligence, Machine Learning, and intelligent automation to streamline operations, optimize workflows, and unlock smarter business decisions.",
     cta: "Discover AI Solutions",
     image: "/images/2.webp",
+    href: "ai-automation-services",
   },
   {
     title: "Product Engineering",
     desc: "Design, develop, and modernize scalable digital products with agile engineering, user-centric design, and enterprise-grade performance.",
     cta: "Build Digital Products",
     image: "/images/3.webp",
+    href: "product-engineering-services",
   },
   {
     title: "Cloud & Infrastructure",
     desc: "Accelerate cloud adoption with secure, scalable, and high-performance cloud infrastructure, migration, modernization, and managed cloud services.",
     cta: "Modernize Your Cloud",
     image: "/images/4.webp",
+    href: "cloud-infrastructure-services",
   },
   {
     title: "Data & Analytics",
     desc: "Transform enterprise data into actionable insights with advanced analytics, business intelligence, predictive modeling, and real-time reporting.",
     cta: "Unlock Data Insights",
     image: "/images/5.webp",
+    href: "data-analytics-services",
   },
   {
     title: "Managed Services",
     desc: "Ensure maximum uptime and operational efficiency with proactive monitoring, infrastructure management, application support, cybersecurity, and continuous optimization.",
     cta: "Explore Managed Services",
     image: "/images/6.webp",
+    href: "managed-services",
   },
 ];
 
@@ -130,16 +140,20 @@ const technologies = [
 const industries: Industry[] = [
 
   { label: "Healthcare & Life Sciences", image: "/images/industry-healthcare.webp", icon: "/images/lifescience.svg" },
-  { label: "Education", image: "/images/industry-banking.webp", icon: "/images/banking.svg" },
+  { label: "Education", image: "/images/engineer-working-on-laptop.webp", icon: "/images/digital-experience.svg" },
   { label: "Manufacturing", image: "/images/industry-manufacturing.webp", icon: "/images/manufacturing.svg" },
   { label: "Retail & E-Commerce", image: "/images/industry-retail.webp", icon: "/images/e-com.svg" },
-  { label: "Hospitality", image: "/images/industry-logistics.webp", icon: "/images/logistics.svg" },
- 
-  { label: "Real Estate", image: "/images/atlantech-global-collaborating.webp", icon: "/images/inovation.svg" },
-   { label: "Telecommunications", image: "/images/industry-telecom.webp", icon: "/images/telecommunications.svg" },
+  { label: "Hospitality", image: "/images/atlantech-global-collaborating.webp", icon: "/images/inovation.svg" },
+
+  { label: "Real Estate", image: "/images/industry-banking.webp", icon: "/images/banking.svg" },
+  { label: "Telecommunications", image: "/images/industry-telecom.webp", icon: "/images/telecommunications.svg" },
   { label: "Energy & Utilities", image: "/images/industry-energy.webp", icon: "/images/energy-utility.svg" },
-  { label: "Logistics & Supply Chain", image: "/images/engineer-working-on-laptop.webp", icon: "/images/digital-experience.svg" },
+  { label: "Logistics & Supply Chain", image: "/images/industry-logistics.webp", icon: "/images/logistics.svg" },
   { label: "Fintech", image: "/images/industry-government.webp", icon: "/images/gov-pub.svg" },
+
+
+
+
 ];
 
 const caseStudies = [
@@ -281,37 +295,59 @@ const highlightIcons = {
   ),
   trend: <path d="M3 17l6-6 4 4 8-8M15 7h6v6" />,
 };
-  
+
 export default function HomePage() {
-  
+  const [showHeroContent, setShowHeroContent] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowHeroContent(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <RevealOnScroll />
+
       <section className={styles.hero}>
-        <div className="container">
-          <div className={styles.heroStage}>
-            {/* minWidth={768} is kept for future if needed */}
-            <LazyVideo src={asset("/videos/hero.mp4")} className={styles.heroVideo}    />
-            <div className={styles.heroOverlay} />
-            <div className={styles.heroContent}>
-              {/* <p className={styles.heroEyebrow}>Atlantech Global</p>
-              <h1 className={styles.heroTitle}>Your AI-Ready Technology &amp; Consulting Partner</h1> */}
-              <p className={styles.heroSub}>
-                Leading IT Solutions Company delivering AI, Digital Transformation, and Product
-                Engineering worldwide.
-              </p>
-              <div className={styles.actions}>
-                <a href="#contact" className="btn btn-primary">
-                  Talk to Our Experts <ArrowIcon />
-                </a>
-                <a href="#services" className="btn btn-outline-dark">
-                  Explore Our Services
-                </a>
-              </div>
+        <div className={styles.heroStage}>
+
+          <LazyVideo
+            src={asset("/videos/hero.mp4")}
+            className={styles.heroVideo}
+          />
+          <div className={styles.heroOverlay} />
+
+
+
+
+          <div className={`${styles.heroContent} ${showHeroContent ? styles.heroContentVisible : ""}`}>
+            <p>
+              Leading IT Solutions Company delivering AI, Digital
+              <br />
+              Transformation, and Product Engineering worldwide.
+            </p>
+
+            <div className={styles.heroActions}>
+              <Link href="/contact" className="btn btn-primary">
+                Talk to Our Experts <ArrowIcon />
+              </Link>
+
+              <Link href="/services" className="btn btn-outline-dark">
+                Explore Our Services
+              </Link>
             </div>
           </div>
+
+
+
+
         </div>
       </section>
+
 
       <section className={styles.trusted} aria-labelledby="trusted-title">
         <h2 id="trusted-title" className={styles.trustedTitle}>
@@ -430,16 +466,19 @@ export default function HomePage() {
                 <img src={asset(s.image)} alt="" width={640} height={480} loading="lazy" decoding="async" />
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
-                <a href="#contact" className={styles.serviceLink}>
+                {/* <a href="#contact" className={styles.serviceLink}>
                   {s.cta} <ArrowIcon />
-                </a>
+                </a> */}
+                <Link href={s.href} className={styles.serviceLink}>
+                  {s.cta} <ArrowIcon />
+                </Link>
               </article>
             ))}
           </div>
 
           <div className={styles.ctaStrip}>
             {/* minWidth={768} for future to add in LazyVideo */}
-            <LazyVideo src={asset("/videos/cta-network.mp4")} className={styles.ctaVideo}  />
+            <LazyVideo src={asset("/videos/cta-network.mp4")} className={styles.ctaVideo} />
             <div className={styles.ctaOverlay} />
             <h2>
               Turn Technology Into <span className="text-purple-light">Your Competitive Advantage</span>
@@ -520,7 +559,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className={styles.testimonials}>
+          <div className={styles.testimonials} id="testimonials">
             <p className="eyebrow-pill center">SUCCESS STORIES</p>
             <h2 className="section-title center">
               Success Stories from <span className="text-purple">Our Clients</span>
